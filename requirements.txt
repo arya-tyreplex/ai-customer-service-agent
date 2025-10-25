@@ -1,0 +1,15 @@
+openai
+python-dotenv
+pydantic
+pytest
+pytest-asyncio
+black
+mypy
+jupyter
+ipykernel
+loguru
+tenacity
+types-requests
+pre-commit
+fastapi
+uvicorn
