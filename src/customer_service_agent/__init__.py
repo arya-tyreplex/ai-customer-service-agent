@@ -1,49 +1,26 @@
 """
-AI Customer Service Agent - A production-ready customer service AI agent system.
+TyrePlex AI Call Center - Voice-enabled customer service for tyre business.
 """
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 __author__ = "Bhavik Jikadara"
 __email__ = "bhavikjikadara@yahoo.com"
 
-from .agent import CustomerServiceAgent
-from .config import AgentConfig
-from .models import (
-    ConversationMetadata,
-    EvaluationResult,
-    WorkflowStep,
-    WorkflowResult,
-    ToolCall,
-)
-from .tools import create_tool_registry, CustomerServiceTools
-from .evaluator import PerformanceEvaluator, EvaluationMetrics
-from .utils import (
-    setup_logging,
-    format_performance_report,
-    sentiment_score_to_label,
-    ConversationLogger,
+from .tyreplex_voice_agent import TyrePlexVoiceAgent, CallMetadata, CompanyKnowledgeBase
+from .tyreplex_tools import (
+    create_tyreplex_tool_registry,
+    TyrePlexTools,
+    TyrePlexToolRegistry
 )
 
 __all__ = [
     # Main agent
-    "CustomerServiceAgent",
-    # Configuration
-    "AgentConfig",
-    # Models
-    "ConversationMetadata",
-    "EvaluationResult",
-    "WorkflowStep",
-    "WorkflowResult",
-    "ToolCall",
+    "TyrePlexVoiceAgent",
+    # Metadata
+    "CallMetadata",
+    "CompanyKnowledgeBase",
     # Tools
-    "create_tool_registry",
-    "CustomerServiceTools",
-    # Evaluation
-    "PerformanceEvaluator",
-    "EvaluationMetrics",
-    # Utilities
-    "setup_logging",
-    "format_performance_report",
-    "sentiment_score_to_label",
-    "ConversationLogger",
+    "create_tyreplex_tool_registry",
+    "TyrePlexTools",
+    "TyrePlexToolRegistry",
 ]

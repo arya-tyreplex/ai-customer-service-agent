@@ -1,144 +1,234 @@
-# AI Customer Service Agent System | OpenAI AgentKit | Enterprise Support Automation
+# TyrePlex AI Call Center 🎯📞
 
-Build intelligent customer service agents with this comprehensive OpenAI AgentKit implementation. This production-ready AI system automates customer support with multi-step workflows, tool integration, stateful conversations, and real-time performance monitoring. Perfect for enterprises seeking to scale customer service operations with AI-powered automation.
+**India's First AI-Powered Tyre Call Center Agent**
 
-Key Features:
+Transform your tyre business with an intelligent voice agent that handles customer calls 24/7, understands vehicle requirements, recommends the perfect tyres, and captures leads automatically.
 
-- 🤖 Intelligent AI customer service agents
-- 🔧 Multi-tool integration (order lookup, refund processing, inventory checks)
-- 📊 Real-time performance evaluation and sentiment analysis
-- 💬 Stateful conversation memory
-- 🚀 Production-ready with error handling and fallback mechanisms
-- 📈 Comprehensive analytics and reporting
+---
 
-Use Cases:
+## 🚀 What This Does
 
-- E-commerce customer support
-- Order status inquiries
-- Refund and return processing
-- Product availability checks
-- Customer sentiment monitoring
-- Support agent performance analytics
+Your TyrePlex AI Call Center Agent can:
 
-Built with OpenAI's latest models and following enterprise software development best practices. Includes complete documentation, testing suite, and deployment scripts.
+✅ **Answer incoming calls** with natural, human-like conversations  
+✅ **Identify tyre requirements** from vehicle make, model, and variant  
+✅ **Recommend tyres** based on budget, usage, and preferences  
+✅ **Compare brands** (MRF, CEAT, Apollo, Bridgestone, Michelin, etc.)  
+✅ **Check availability** in customer's location  
+✅ **Explain services** (home installation, store fitment, delivery)  
+✅ **Capture leads** automatically with all details  
+✅ **Handle multiple scenarios** (budget, premium, comparison, exploration)  
+✅ **Speak Indian English** with natural pronunciation  
+✅ **Generate analytics** on calls, leads, and performance  
 
-Keywords: AI customer service, OpenAI AgentKit, customer support automation, chatbot, conversational AI, enterprise AI, customer service automation, AI agent system, multi-step workflows, tool integration, performance monitoring, sentiment analysis.
+---
 
-## 🚀 Quick Start
+## 📞 Quick Start
 
-### Installation
+### Option 1: Text Simulation (No Phone Required)
 
 ```bash
-git clone https://github.com/Bhavik-Jikadara/ai-customer-service-agent.git.git
-cd ai-customer-service-agent
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# Set up environment variables
+# 2. Set up environment
 cp .env.example .env
-# Edit .env with your OpenAI API key
+# Add your OPENAI_API_KEY to .env
+
+# 3. Run demo
+python examples/tyreplex_call_center_demo.py
 ```
 
-### Basic Usage
+### Option 2: Real Phone Calls (with Twilio)
 
+```bash
+# 1. Configure Twilio in .env
+OPENAI_API_KEY=sk-your-key
+TWILIO_ACCOUNT_SID=ACxxxxx
+TWILIO_AUTH_TOKEN=your-token
+TWILIO_PHONE_NUMBER=+1234567890
+
+# 2. Start server
+python examples/tyreplex_real_phone.py
+
+# 3. Expose with ngrok (for testing)
+ngrok http 5000
+
+# 4. Configure Twilio webhook
+# Point to: https://your-ngrok-url/tyreplex/voice/incoming
+
+# 5. Call your Twilio number!
+```
+
+---
+
+## 🎯 Key Features
+
+### 1. **Vehicle Intelligence**
+- Knows 100+ vehicle makes and models
+- Identifies correct tyre size automatically
+- Handles variants (LXI, VXI, ZXI, etc.)
+- Covers cars, bikes, scooters, and commercial vehicles
+
+### 2. **Smart Recommendations**
+- Budget-based suggestions (₹2,000 - ₹30,000)
+- Usage-based (city, highway, mixed, performance)
+- Brand comparisons
+- Feature explanations
+
+### 3. **Location Services**
+- 1000+ partner stores across India
+- Same-day delivery in major cities
+- Home installation within 24 hours
+- Store fitment options
+
+### 4. **Lead Management**
+- Automatic lead capture
+- Complete customer information
+- Urgency classification
+- Follow-up scheduling
+- Lead ID generation
+
+### 5. **Natural Conversations**
+- Indian English voice (Polly.Aditi)
+- Understands vehicle names and brands
+- Handles interruptions gracefully
+- Asks clarifying questions
+- Professional yet friendly tone
+
+---
+
+## 📊 What You Get
+
+### Call Analytics
+- Total calls handled
+- Average call duration
+- Lead capture rate
+- Customer satisfaction scores
+- Tools usage frequency
+- Response times
+
+### Lead Information
+- Customer name and phone
+- Vehicle details (make/model/variant)
+- Tyre size
+- Budget range
+- Location
+- Urgency level
+- Timestamp
+- Unique lead ID
+
+### Conversation Logs
+- Complete call transcripts
+- Tool executions
+- Response times
+- Resolution status
+
+---
+
+## 🎨 Customization
+
+### Update Your Data
+
+**1. Company Information** (`data/tyreplex_knowledge.json`)
+```json
+{
+  "company_info": {
+    "name": "Your Company",
+    "support_phone": "Your Number"
+  }
+}
+```
+
+**2. Add Vehicles** (`src/customer_service_agent/tyreplex_tools.py`)
 ```python
-from customer_service_agent import CustomerServiceAgent
-
-# Initialize agent
-agent = CustomerServiceAgent(model="gpt-4o")
-
-# Start conversation
-response = agent.chat(
-    "Hi, I'd like to check the status of my order ORD-12345",
-    customer_id="CUST-001"
-)
-print(response)
+"Your Make": {
+    "Your Model": {
+        "Variant": {"tyre_size": "195/65 R15"}
+    }
+}
 ```
 
-## 📋 Requirements
-
-- Python 3.8+
-- OpenAI API key
-- See `requirements.txt` for full dependencies
-
-## 🛠️ Configuration
-
-1. Get your [OpenAI API Key](https://platform.openai.com/settings/organization/api-keys)
-2. Copy `.env.example` to `.env`
-3. Add your API key: `OPENAI_API_KEY='your-api-key-here'`
-
-## 📊 Demo
-
-Run the complete demonstration:
-
-```bash
-python scripts/run_demo.py
-```
-
-## 🏗️ Project Structure
-
-```bash
-ai-customer-service-agent/
-├── src/              # Source code
-├── tests/            # Test suite
-├── examples/         # Usage examples
-├── notebooks/        # Jupyter notebooks
-├── docs/            # Documentation
-└── scripts/         # Utility scripts
-```
-
-## 🔧 Development
-
-### Running Tests
-
-```bash
-pytest tests/
-```
-
-### Code Formatting
-
-```bash
-black src/ tests/
-```
-
-### Type Checking
-
-```bash
-mypy src/
-```
-
-## 📈 Performance Monitoring
-
-The system includes built-in evaluation and reporting:
-
+**3. Add Tyres**
 ```python
-# Generate performance report
-report = agent.get_performance_report()
-print(report)
-
-# Get conversation summary
-summary = agent.get_conversation_summary()
+"195/65 R15": [
+    {
+        "brand": "Brand",
+        "model": "Model",
+        "price": 5000
+    }
+]
 ```
 
-## 🤝 Contributing
+---
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+## 📚 Documentation
+
+- **Quick Start:** `docs/TYREPLEX_QUICKSTART.md`
+- **Architecture:** `docs/TYREPLEX_ARCHITECTURE.md`
+- **Implementation:** `TYREPLEX_IMPLEMENTATION_SUMMARY.md`
+- **Full Guide:** `README_TYREPLEX.md`
+
+---
+
+## 💰 Pricing
+
+### Costs Per Call (Approximate)
+
+**OpenAI API:**
+- GPT-4o: ~₹2-5 per call
+- GPT-3.5-turbo: ~₹0.50-1 per call
+
+**Twilio:**
+- Incoming call: ~₹0.85/minute
+- Speech recognition: ~₹0.04/15 seconds
+- Text-to-speech: ~₹0.04/100 characters
+
+**Total:** ₹5-10 per call
+
+---
+
+## 🔧 Technical Stack
+
+- **AI Model:** OpenAI GPT-4o / GPT-3.5-turbo
+- **Voice:** Twilio Voice API
+- **Speech-to-Text:** Twilio Speech Recognition
+- **Text-to-Speech:** Amazon Polly (Aditi - Indian English)
+- **Backend:** Python + Flask
+- **Tools:** Custom function calling
+- **Logging:** Loguru
+
+---
+
+## 🎓 Testing
+
+Run the setup verification:
+```bash
+python test_tyreplex_setup.py
+```
+
+Run the demo:
+```bash
+python examples/tyreplex_call_center_demo.py
+```
+
+---
+
+## 📞 Support
+
+For questions or support:
+- Email: help@tyreplex.com
+- Documentation: `docs/` folder
+- Issues: GitHub Issues
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - See LICENSE file for details
 
-## 🆘 Support
+---
 
-- 📚 [Documentation](docs/)
-- 🐛 [Issues](https://github.com/Bhavik-Jikadara/ai-customer-service-agent.git/issues)
-- 💬 [Discussions](https://github.com/Bhavik-Jikadara/ai-customer-service-agent.git/discussions)
+**Built with ❤️ for TyrePlex - India's No. 1 Tyre Destination**
+
+*Revolutionizing tyre retail with AI-powered customer service*

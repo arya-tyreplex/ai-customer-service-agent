@@ -20,38 +20,39 @@ wheels/
 .installed.cfg
 *.egg
 
-# pytest
-.pytest_cache/
-.coverage
-.tox/
-
-# Environment
-.env
-.venv
-env/
+# Virtual environments
 venv/
 ENV/
-env.bak/
-venv.bak/
+env/
+
+# Environment variables
+.env
+.env.local
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# Jupyter
-.ipynb_checkpoints
+*~
 
 # Logs
 *.log
-logs/
+call_logs/
+customer_agent.log
 
-# Data
-data/sensitive/
-*.db
-*.sqlite
+# OS
+.DS_Store
+Thumbs.db
 
-# API Keys
-*_key.txt
-*_token.txt
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Project specific
+data/evaluation_results.json
+data/sample_conversations.json

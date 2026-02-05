@@ -1,0 +1,266 @@
+{
+  "company_info": {
+    "name": "TyrePlex",
+    "tagline": "India's No. 1 Website for Tyres",
+    "founded": "2020",
+    "mission": "Digitize the tyre industry in India",
+    "website": "www.tyreplex.com",
+    "support_email": "help@tyreplex.com",
+    "support_phone": "1800-XXX-XXXX",
+    "business_hours": "Monday-Saturday: 9:00 AM - 7:00 PM, Sunday: 10:00 AM - 6:00 PM",
+    "headquarters": "New Delhi, India"
+  },
+  
+  "services": {
+    "primary": [
+      "Tyre Search & Comparison",
+      "Tyre Recommendations based on Vehicle",
+      "Price Comparison across Brands",
+      "Home Delivery & Installation",
+      "Store Fitment Services",
+      "Lead Generation for Dealers",
+      "Appointment Booking"
+    ],
+    "additional": [
+      "Wheel Alignment",
+      "Wheel Balancing",
+      "Tyre Rotation",
+      "Puncture Repair",
+      "Nitrogen Filling",
+      "Alloy Wheels"
+    ]
+  },
+  
+  "vehicle_categories": {
+    "car": {
+      "popular_makes": [
+        "Maruti Suzuki", "Hyundai", "Honda", "Toyota", "Mahindra", 
+        "Tata", "KIA", "MG", "Volkswagen", "Skoda", "Renault", 
+        "Ford", "Nissan", "BMW", "Audi", "Mercedes-Benz"
+      ],
+      "popular_models": {
+        "Maruti Suzuki": ["Swift", "Baleno", "Wagon R", "Alto", "Dzire", "Ertiga", "Brezza", "Celerio", "S-Cross"],
+        "Hyundai": ["i20", "Creta", "Venue", "Verna", "Grand i10 Nios", "Exter", "Alcazar"],
+        "Honda": ["City", "Amaze", "Elevate", "WR-V", "Jazz", "Civic"],
+        "Toyota": ["Fortuner", "Innova Crysta", "Innova Hycross", "Urban Cruiser", "Glanza", "Camry"],
+        "Mahindra": ["Scorpio", "XUV700", "Thar", "Bolero", "XUV300", "Scorpio N"],
+        "Tata": ["Nexon", "Harrier", "Safari", "Punch", "Altroz", "Tiago"],
+        "KIA": ["Seltos", "Sonet", "Carens", "Carnival"]
+      },
+      "common_sizes": [
+        "165/80 R14", "175/65 R14", "185/65 R15", "195/55 R16",
+        "205/60 R16", "215/60 R16", "215/65 R16", "225/65 R17",
+        "235/60 R18", "255/55 R18"
+      ]
+    },
+    "bike": {
+      "popular_makes": ["Hero", "Honda", "Bajaj", "TVS", "Royal Enfield", "Yamaha", "Suzuki", "KTM"],
+      "popular_models": {
+        "Hero": ["Splendor Plus", "HF Deluxe", "Passion Pro", "Glamour", "Xtreme 160R"],
+        "Honda": ["Activa", "Shine", "CB350", "Unicorn", "Hornet 2.0"],
+        "Bajaj": ["Pulsar", "Platina", "CT 110", "Dominar", "Avenger"],
+        "TVS": ["Apache", "Jupiter", "Ntorq", "Raider", "Sport"],
+        "Royal Enfield": ["Classic 350", "Bullet 350", "Meteor 350", "Himalayan", "Hunter 350"]
+      },
+      "common_sizes": [
+        "2.75-17", "2.75-18", "3.00-17", "3.00-18",
+        "90/90-17", "100/90-17", "110/70-17", "120/70-17",
+        "90/100-10", "100/90-10"
+      ]
+    },
+    "scooter": {
+      "popular_makes": ["Honda", "TVS", "Suzuki", "Hero", "Yamaha"],
+      "popular_models": {
+        "Honda": ["Activa 6G", "Dio", "Grazia"],
+        "TVS": ["Jupiter", "Ntorq 125", "Scooty Pep+"],
+        "Suzuki": ["Access 125", "Burgman Street"],
+        "Hero": ["Pleasure Plus", "Maestro Edge"],
+        "Yamaha": ["Fascino", "Ray ZR", "Aerox"]
+      },
+      "common_sizes": ["90/90-12", "90/100-10", "100/80-12", "110/70-12", "120/70-12"]
+    },
+    "commercial": {
+      "types": ["Truck Tyres", "Bus Tyres", "Three Wheeler Tyres", "Tractor Tyres"],
+      "popular_brands": ["MRF", "CEAT", "Apollo", "JK Tyre", "Birla"]
+    }
+  },
+  
+  "tyre_brands": {
+    "premium": {
+      "brands": ["Michelin", "Bridgestone", "Pirelli", "Continental", "Goodyear"],
+      "characteristics": "Best performance, longest life, premium pricing, excellent grip and comfort",
+      "price_range": "₹5,000 - ₹30,000 per tyre"
+    },
+    "mid_range": {
+      "brands": ["MRF", "Apollo", "CEAT", "JK Tyre", "Yokohama"],
+      "characteristics": "Good balance of performance and price, reliable, widely available",
+      "price_range": "₹3,000 - ₹12,000 per tyre"
+    },
+    "budget": {
+      "brands": ["TVS Eurogrip", "Ralco", "Metro", "Maxxis", "Firestone"],
+      "characteristics": "Affordable, decent performance, good for city driving",
+      "price_range": "₹2,000 - ₹6,000 per tyre"
+    }
+  },
+  
+  "tyre_types": {
+    "tubeless": "Modern standard, self-sealing, safer, better performance",
+    "tube_type": "Traditional, cheaper, used in older vehicles and commercial vehicles",
+    "run_flat": "Can run even after puncture, premium segment, no spare needed",
+    "all_season": "Good for all weather conditions, balanced performance",
+    "summer": "Best grip in dry and wet conditions, not for snow",
+    "winter": "Designed for snow and ice, soft compound",
+    "performance": "High-speed rated, better handling, sports cars",
+    "off_road": "Aggressive tread, SUVs and adventure vehicles"
+  },
+  
+  "tyre_specifications": {
+    "width": "First number in tyre size (e.g., 195 in 195/65 R15) - measured in millimeters",
+    "aspect_ratio": "Second number (e.g., 65 in 195/65 R15) - sidewall height as % of width",
+    "rim_diameter": "Last number (e.g., 15 in 195/65 R15) - wheel size in inches",
+    "load_index": "Maximum weight tyre can carry (e.g., 91 = 615 kg)",
+    "speed_rating": "Maximum speed capability (e.g., H = 210 km/h, V = 240 km/h, W = 270 km/h)"
+  },
+  
+  "recommendations_by_usage": {
+    "city_driving": {
+      "priority": "Comfort, fuel efficiency, low noise",
+      "recommended_brands": ["Apollo Amazer", "CEAT Milaze", "MRF ZVTV", "Bridgestone Ecopia"],
+      "features": "Long tread life, good mileage, comfortable ride"
+    },
+    "highway_driving": {
+      "priority": "High-speed stability, durability, safety",
+      "recommended_brands": ["Michelin Primacy", "Bridgestone Turanza", "MRF Wanderer", "Apollo Alnac"],
+      "features": "High speed rating, excellent grip, stable at high speeds"
+    },
+    "mixed_terrain": {
+      "priority": "Versatility, durability, all-weather performance",
+      "recommended_brands": ["CEAT CrossDrive", "Apollo Apterra", "MRF Nylogrip", "Bridgestone Dueler"],
+      "features": "Good on-road and off-road, durable, all-season"
+    },
+    "performance_driving": {
+      "priority": "Grip, handling, cornering, braking",
+      "recommended_brands": ["Michelin Pilot Sport", "Pirelli P Zero", "Continental SportContact", "Bridgestone Potenza"],
+      "features": "Excellent grip, responsive handling, high speed rated"
+    },
+    "budget_conscious": {
+      "priority": "Affordability, decent performance, value for money",
+      "recommended_brands": ["TVS Eurogrip", "Ralco", "CEAT Milaze", "Apollo Amazer"],
+      "features": "Affordable, reliable, good for daily commute"
+    }
+  },
+  
+  "common_queries": {
+    "tyre_life": "Typically 40,000-60,000 km or 3-5 years, depending on usage and maintenance",
+    "when_to_replace": "When tread depth is below 1.6mm, visible cracks, bulges, or uneven wear",
+    "rotation_frequency": "Every 8,000-10,000 km or every 6 months",
+    "alignment_frequency": "Every 10,000 km or if vehicle pulls to one side",
+    "balancing_frequency": "Every tyre change or if vibration felt at high speeds",
+    "nitrogen_vs_air": "Nitrogen maintains pressure longer, reduces oxidation, but air is sufficient for most users",
+    "warranty": "Most brands offer 1-5 year warranty against manufacturing defects",
+    "installation_time": "30-45 minutes for 4 tyres including alignment and balancing"
+  },
+  
+  "pricing_info": {
+    "car_tyres": {
+      "small_cars": "₹2,500 - ₹6,000 per tyre",
+      "sedans": "₹4,000 - ₹12,000 per tyre",
+      "suvs": "₹6,000 - ₹20,000 per tyre",
+      "luxury_cars": "₹10,000 - ₹35,000 per tyre"
+    },
+    "bike_tyres": {
+      "commuter": "₹1,200 - ₹2,500 per tyre",
+      "premium": "₹2,500 - ₹5,000 per tyre",
+      "sports": "₹4,000 - ₹12,000 per tyre"
+    },
+    "scooter_tyres": "₹1,000 - ₹3,000 per tyre",
+    "installation_charges": "₹200 - ₹500 per tyre (varies by location)",
+    "alignment": "₹500 - ₹1,500",
+    "balancing": "₹100 - ₹300 per tyre"
+  },
+  
+  "delivery_options": {
+    "home_delivery": "Tyres delivered to your doorstep with installation within 24 hours",
+    "store_fitment": "Visit partner store for installation, 1000+ stores across India",
+    "same_day_delivery": "Available in major cities for orders before 2 PM",
+    "free_delivery": "On orders above ₹5,000 in most locations"
+  },
+  
+  "payment_options": ["Credit Card", "Debit Card", "UPI", "Net Banking", "Wallets", "EMI Options", "Cash on Delivery"],
+  
+  "locations": {
+    "major_cities": [
+      "Delhi NCR", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
+      "Pune", "Kolkata", "Ahmedabad", "Jaipur", "Lucknow", 
+      "Chandigarh", "Indore", "Bhopal", "Nagpur", "Surat"
+    ],
+    "coverage": "1000+ partner stores across 500+ cities in India"
+  },
+  
+  "lead_qualification": {
+    "required_info": [
+      "Customer name and contact number",
+      "Vehicle make, model, and variant",
+      "Current tyre size (if known)",
+      "Preferred brand or budget",
+      "Location/city",
+      "Urgency (immediate/within week/just exploring)"
+    ],
+    "follow_up_process": "Sales team will call within 2 hours with personalized recommendations and quotes"
+  },
+  
+  "faqs": {
+    "How do I find the right tyre size?": "Check your vehicle manual, look at the sidewall of your current tyre, or tell us your vehicle make/model/variant and we'll find it for you.",
+    "Do you offer installation?": "Yes! We offer both home installation (within 24 hours) and installation at 1000+ partner stores across India.",
+    "What brands do you have?": "We have all major brands including MRF, CEAT, Apollo, Bridgestone, Michelin, Pirelli, JK Tyre, Goodyear, Continental, and 40+ more brands.",
+    "How long does delivery take?": "Standard delivery within 24-48 hours. Same-day delivery available in major cities for orders before 2 PM.",
+    "Do you offer warranty?": "Yes, all tyres come with manufacturer warranty ranging from 1-5 years against manufacturing defects.",
+    "Can I compare tyres?": "Absolutely! Our website allows you to compare features, prices, and reviews of multiple tyres side-by-side.",
+    "What payment methods do you accept?": "We accept all major payment methods including cards, UPI, net banking, wallets, EMI, and cash on delivery.",
+    "Do you have EMI options?": "Yes, we offer EMI options on orders above ₹3,000 through credit cards and financing partners.",
+    "What if I'm not satisfied?": "We have a 7-day return policy if tyres are unused and in original condition.",
+    "Do you service commercial vehicles?": "Yes, we have tyres for trucks, buses, three-wheelers, and tractors."
+  },
+  
+  "call_handling_guidelines": {
+    "greeting": "Thank you for calling TyrePlex, India's number one tyre destination. I'm [Agent Name]. How may I help you today?",
+    "information_gathering": [
+      "Ask for vehicle details (make, model, variant)",
+      "Understand usage pattern (city/highway/mixed)",
+      "Budget range",
+      "Preferred brands (if any)",
+      "Location for delivery",
+      "Timeline/urgency"
+    ],
+    "recommendation_approach": [
+      "Provide 2-3 options across different price points",
+      "Explain key features and benefits",
+      "Mention current offers/discounts",
+      "Compare with customer's current tyres if applicable"
+    ],
+    "closing": [
+      "Summarize recommendations",
+      "Provide price quotes",
+      "Explain next steps (order process/store visit)",
+      "Capture lead information",
+      "Set expectations for follow-up",
+      "Thank customer for calling"
+    ]
+  },
+  
+  "current_offers": {
+    "seasonal": "Monsoon Special: 15% off on all-season tyres",
+    "brand_specific": "Buy 3 Get 1 Free on select MRF and CEAT models",
+    "installation": "Free wheel alignment with purchase of 4 tyres",
+    "referral": "Refer a friend and get ₹500 credit on next purchase"
+  },
+  
+  "escalation_scenarios": [
+    "Technical queries beyond agent knowledge",
+    "Bulk orders (fleet/corporate)",
+    "Complaints or service issues",
+    "Custom/rare tyre requirements",
+    "Dealer partnership inquiries",
+    "Media/press inquiries"
+  ]
+}

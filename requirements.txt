@@ -1,15 +1,13 @@
-openai
-python-dotenv
-pydantic
-pytest
-pytest-asyncio
-black
-mypy
-jupyter
-ipykernel
-loguru
-tenacity
-types-requests
-pre-commit
-fastapi
-uvicorn
+# Core dependencies
+openai>=1.0.0
+python-dotenv>=1.0.0
+loguru>=0.7.0
+tenacity>=8.0.0
+
+# Voice capabilities
+twilio>=8.0.0
+flask>=3.0.0
+
+# Optional for development
+pytest>=7.0.0
+black>=23.0.0
