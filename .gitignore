@@ -20,14 +20,11 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
+# Virtual Environment
 venv/
 ENV/
 env/
-
-# Environment variables
-.env
-.env.local
+.venv/
 
 # IDE
 .vscode/
@@ -36,23 +33,30 @@ env/
 *.swo
 *~
 
+# Data
+data/processed/
+models/*.pkl
+models/*.json
+*.csv
+!vehicle_tyre_mapping.csv
+
 # Logs
+logs/
 *.log
 call_logs/
-customer_agent.log
+
+# Environment
+.env
+.env.local
+
+# Docker
+docker-compose.override.yml
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Project specific
-data/evaluation_results.json
-data/sample_conversations.json
+# Temporary
+tmp/
+temp/
+*.tmp
