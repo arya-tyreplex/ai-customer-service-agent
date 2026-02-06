@@ -156,13 +156,22 @@ class AWSVoiceAgent:
         
         audio_file = None
         try:
+            # Fix language code for AWS Polly
+            # AWS Polly uses 'hi-IN' not 'hi', 'en-IN' not 'en'
+            if lang == 'hi':
+                lang = 'hi-IN'
+            elif lang == 'en':
+                lang = 'en-IN'
+            elif lang is None:
+                lang = 'en-IN'
+            
             # Call AWS Polly for TTS
             response = self.polly_client.synthesize_speech(
                 Text=text,
                 OutputFormat='pcm',
                 VoiceId='Kajal',  # Indian English female voice
                 Engine='neural',  # Use neural engine for better quality
-                LanguageCode=lang or 'en-IN'
+                LanguageCode=lang
             )
             
             # Get audio stream
@@ -452,35 +461,88 @@ class AWSVoiceAgent:
             self.speak("5. Warranty and guarantee on all tyres.")
     
     def greeting(self):
-        """Initial greeting with language detection."""
-        # Start with bilingual greeting
-        self.speak("Hello! Namaste! Thank you for calling TyrePlex. Main Priya bol rahi hoon.")
-        self.speak("Aap English ya Hindi mein baat kar sakte hain. What's your name? Aapka naam kya hai?")
+        """Initial greeting with language preference."""
+        # Start with brief bilingual greeting
+        self.speak("Hello! Namaste! Thank you for calling TyrePlex. I am Priya.")
+        
+        # Ask for language preference explicitly
+        self.speak("Would you prefer English or Hindi? English ya Hindi?")
+        
+        for attempt in range(2):
+            response = self.listen(timeout=8)
+            if response:
+                response_lower = response.lower()
+                
+                # Check language preference
+                if any(word in response_lower for word in ['hindi', 'हिंदी', 'हिन्दी']):
+                    self.state.language = 'hi'
+                    self.speak("Theek hai! Main Hindi mein baat karungi.", lang='hi')
+                    break
+                elif any(word in response_lower for word in ['english', 'इंग्लिश', 'angrezi']):
+                    self.state.language = 'en'
+                    self.speak("Perfect! I'll speak in English.")
+                    break
+                elif any(word in response_lower for word in ['both', 'dono', 'mix', 'hinglish']):
+                    self.state.language = 'mix'
+                    self.speak("Sure! Main dono languages mein baat kar sakti hoon.")
+                    break
+                else:
+                    # Auto-detect from response
+                    detected_lang = self.detect_language(response)
+                    self.state.language = detected_lang
+                    if detected_lang == 'hi':
+                        self.speak("Theek hai! Main Hindi mein baat karungi.", lang='hi')
+                    elif detected_lang == 'mix':
+                        self.speak("Sure! Main Hinglish mein baat karungi.")
+                    else:
+                        self.speak("Perfect! I'll speak in English.")
+                    break
+            else:
+                if attempt < 1:
+                    self.speak("Sorry, I didn't hear you. English or Hindi?")
+        
+        # Default to English if no clear preference
+        if not self.state.language or self.state.language not in ['en', 'hi', 'mix']:
+            self.state.language = 'en'
+            self.speak("I'll continue in English.")
+        
+        # Now ask for name in chosen language
+        if self.state.language == 'hi':
+            self.speak("Aapka naam kya hai?", lang='hi')
+        elif self.state.language == 'mix':
+            self.speak("Aapka naam kya hai?")
+        else:
+            self.speak("What's your name?")
         
         for attempt in range(2):
             response = self.listen(timeout=10)
             if response:
-                # Detect language preference
-                detected_lang = self.detect_language(response)
-                self.state.language = detected_lang
-                
                 name = self.extract_name(response)
                 if name:
                     self.state.customer_name = name
                     
-                    # Respond in detected language
-                    if detected_lang == 'hi':
+                    # Greet in chosen language
+                    if self.state.language == 'hi':
                         self.speak(f"Namaste {name} ji! Aapka swagat hai TyrePlex mein.", lang='hi')
-                    elif detected_lang == 'mix':
-                        self.speak(f"Hello {name}! Bahut badhiya. Main aapki kaise help kar sakti hoon?")
+                    elif self.state.language == 'mix':
+                        self.speak(f"Hello {name}! Welcome to TyrePlex.")
                     else:
-                        self.speak(f"Nice to meet you {name}! How can I help you today?")
+                        self.speak(f"Nice to meet you {name}! Welcome to TyrePlex.")
                     return True
             else:
                 if attempt < 1:
-                    self.speak("I didn't hear you. Sunai nahi diya. Please speak louder. Zor se boliye.")
+                    if self.state.language == 'hi':
+                        self.speak("Sunai nahi diya. Apna naam bataiye.", lang='hi')
+                    else:
+                        self.speak("I didn't hear you. Please tell me your name.")
         
-        self.speak("No problem! Koi baat nahi! How can I help you? Main aapki kaise madad kar sakti hoon?")
+        # Continue without name
+        if self.state.language == 'hi':
+            self.speak("Koi baat nahi! Main aapki kaise madad kar sakti hoon?", lang='hi')
+        elif self.state.language == 'mix':
+            self.speak("No problem! Main aapki kaise help kar sakti hoon?")
+        else:
+            self.speak("No problem! How can I help you today?")
         return True
     
     def understand_need(self):
