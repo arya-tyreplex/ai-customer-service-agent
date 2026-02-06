@@ -1,307 +1,190 @@
-# TyrePlex AI Customer Service System
+# TyrePlex AI Customer Service Agent
 
-**100% In-House ML Solution - Local Testing**
-
-Complete AI-powered customer service system with ML models and CSV data processing - all running locally on your laptop.
-
----
-
-## 🚀 **NEW USER? START HERE:** [START_HERE.md](START_HERE.md)
-
----
-
-## 🎯 Key Features
-
-- ✅ **No External APIs** - Everything runs locally
-- ✅ **4 ML Models** - Trained on your data (95-98% accuracy)
-- ✅ **MongoDB** - Local data storage
-- ✅ **Elasticsearch** - Fast local search
-- ✅ **REST API** - For testing and integration
-- ✅ **Complete Privacy** - No data leaves your laptop
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.7+
-- Docker Desktop (must be running)
-- Your `vehicle_tyre_mapping.csv` file in project root
-
-### One-Command Setup
-
-```bash
-# Complete setup (creates venv, trains models, starts services)
-./run.sh all
-```
-
-**Time:** 10-15 minutes
-
-### Verify Setup
-
-```bash
-# Test everything
-python test_complete_system.py
-```
-
-See [QUICKSTART.md](QUICKSTART.md) for detailed instructions.
-
-### Individual Commands
-
-```bash
-# Create virtual environment
-./run.sh venv
-
-# Prepare datasets
-./run.sh prepare
-
-# Train ML models
-./run.sh train
-
-# Start Docker services (MongoDB + Elasticsearch)
-./run.sh services
-
-# Process CSV and sync to Elasticsearch
-./run.sh sync
-
-# Run REST API (for testing)
-./run.sh run
-
-# Run tests
-./run.sh test
-
-# Stop services
-./run.sh stop
-```
-
-## 📁 Project Structure
-
-```
-├── src/
-│   ├── ml_system/              # ML models
-│   │   ├── dataset_builder.py  # Dataset preparation
-│   │   ├── model_trainer.py    # Model training
-│   │   └── ml_inference.py     # Inference engine
-│   ├── inhouse_ml/             # Data processing
-│   │   ├── csv_processor.py    # CSV processing
-│   │   ├── elasticsearch_indexer.py  # ES sync
-│   │   └── mongodb_manager.py  # MongoDB operations
-│   └── customer_service_agent/ # Agent logic
-│       ├── csv_tools.py        # CSV tools
-│       └── integrated_agent.py # Main agent
-├── data/                       # Data files
-├── models/                     # Trained models
-├── docker-compose.yml          # Docker services
-├── run.sh                      # Main script
-└── README.md                   # This file
-```
+Complete AI-powered customer service agent for TyrePlex with voice support, ML recommendations, and booking system.
 
 ## 🎯 Features
 
-### ML Models (4 Trained Models)
-1. **Brand Recommender** - 95-98% accuracy
-2. **Price Predictor** - ±₹200 MAE
-3. **Tyre Size Predictor** - 90-95% accuracy
-4. **Intent Classifier** - 90-95% accuracy
+### Voice Agent (FREE & FAST)
+- **Coqui TTS** - Free, open-source text-to-speech (<200ms latency)
+- **Google Speech Recognition** - Free speech-to-text
+- **Bilingual Support** - English, Hindi, Hinglish
+- **Natural Conversation** - Human-like interaction
+- **Complete Booking Flow** - 12-step end-to-end process
 
-### Data Processing
-- CSV processing (50MB+ files)
-- MongoDB storage
-- Elasticsearch indexing
-- Fast lookups (<100ms)
+### ML System
+- **Brand Recommender** - Suggests best tyre brands
+- **Price Predictor** - Estimates tyre prices
+- **Size Predictor** - Determines correct tyre size
+- **Intent Classifier** - Understands customer needs
 
-### Integration
-- Hybrid ML + CSV system
-- Voice agent ready
-- REST API ready
-- Production ready
+### Database Integration
+- **MongoDB** - Stores leads, bookings, call logs
+- **Elasticsearch** - Fast search across 140K+ records
+- **Real-time Updates** - Instant data synchronization
 
-## 💻 Usage
+## 🚀 Quick Start
 
-### Python API
-
-```python
-from src.customer_service_agent.integrated_agent import IntegratedTyrePlexAgent
-
-# Initialize
-agent = IntegratedTyrePlexAgent()
-
-# Get recommendation
-result = agent.identify_vehicle_and_recommend(
-    "Maruti Suzuki", "Swift", "VXI", budget_range="mid"
-)
-
-print(f"Tyre size: {result['tyre_size']['front']}")
-print(f"Top brand: {result['recommendations'][0]['brand']}")
-```
-
-### Shell Script
-
+### 1. Install Dependencies
 ```bash
-# Full pipeline
-./run.sh all
-
-# Individual steps
-./run.sh prepare  # Prepare datasets
-./run.sh train    # Train models
-./run.sh services # Start Docker services
-./run.sh sync     # Sync to Elasticsearch
-./run.sh run      # Run application
-./run.sh test     # Run tests
+pip install -r requirements.txt
 ```
 
-## � Docker Services
-
-### Services Included
-- **Elasticsearch** (port 9200) - Search and indexing
-- **MongoDB** (port 27017) - Data storage
-- **Kibana** (port 5601) - ES visualization (optional)
-
-### Commands
+### 2. Setup Environment
 ```bash
-# Start services
-docker-compose up -d
-
-# Stop services
-docker-compose down
-
-# View logs
-docker-compose logs -f
-
-# Check status
-docker-compose ps
+cp .env.example .env
+# Edit .env with your settings
 ```
+
+### 3. Start Services
+```bash
+# Start MongoDB
+docker-compose up -d mongodb
+
+# Or use the run script
+./run.sh
+```
+
+### 4. Run Voice Agent
+```bash
+python voice_demo_aws.py
+```
+
+## 📦 What's Included
+
+### Voice Demos
+- `voice_demo_aws.py` - **MAIN** - Coqui TTS (FREE, <200ms latency)
+- `voice_demo_natural.py` - Alternative with Google TTS
+- `voice_demo_local.py` - Offline with pyttsx3
+
+### Test Scripts
+- `test_coqui_tts.py` - Test TTS and measure latency
+- `test_complete_system.py` - Test ML system
+- `test_mongodb_insertion.py` - Test database
+- `test_microphone.py` - Test audio input
+
+### Setup & Training
+- `setup_csv.py` - Process CSV data
+- `train_complete_system.py` - Train ML models
+- `demo.py` - Interactive demo
+
+### Utilities
+- `cleanup.py` - Clean cache files
+- `diagnose_voice.py` - Voice diagnostics
+
+## 🎤 Voice Agent Features
+
+### Complete Booking Flow
+1. ✅ Greeting & name collection
+2. ✅ Services presentation
+3. ✅ Need understanding with topic validation
+4. ✅ Vehicle details (make → model → variant)
+5. ✅ ML-powered tyre recommendations
+6. ✅ Interactive selection (first/second/third)
+7. ✅ Booking question
+8. ✅ Contact collection (phone, city)
+9. ✅ Installation scheduling (date, time)
+10. ✅ Booking confirmation
+11. ✅ Database saving (leads, bookings, call logs)
+12. ✅ Professional closing
+
+### Language Support
+- **English** - Full support
+- **Hindi** - Romanized text (works well)
+- **Hinglish** - Code-mixing supported
+
+## 💾 Database Collections
+
+### MongoDB
+- **leads** - Customer information and vehicle details
+- **call_logs** - Call metadata and recommendations
+- **bookings** - Installation bookings with scheduling
+- **vehicles** - Vehicle specifications
+- **tyres** - Tyre catalog with pricing
+
+## 🔧 Requirements
+
+### Core
+- Python 3.10+
+- MongoDB
+- PyAudio (for microphone input)
+
+### Voice Agent
+- TTS (Coqui TTS) - FREE!
+- torch & torchaudio
+- SpeechRecognition
+- pygame
+
+### ML System
+- scikit-learn
+- pandas
+- numpy
 
 ## 📊 Performance
 
 | Metric | Value |
 |--------|-------|
-| ML Accuracy | 95-98% |
-| CSV Accuracy | 100% |
-| Response Time | <100ms |
-| Cost per Call | ₹1.50 |
-| Cost Savings | 80-90% |
+| **TTS Latency** | <200ms |
+| **Cost** | $0 (FREE) |
+| **Voice Quality** | Very Good |
+| **Recognition Accuracy** | High (Indian English) |
+| **ML Models** | 4 trained models |
+| **Database** | MongoDB + Elasticsearch |
 
-## 🧪 Testing
+## 🎯 Use Cases
 
+1. **Inbound Calls** - Handle customer inquiries
+2. **Tyre Recommendations** - ML-powered suggestions
+3. **Booking Management** - Schedule installations
+4. **Lead Tracking** - CRM integration
+5. **Call Analytics** - Performance metrics
+
+## 📝 Documentation
+
+See individual files for detailed documentation:
+- Voice agent implementation
+- ML model training
+- Database schema
+- API endpoints
+
+## 🛠️ Development
+
+### Run Tests
 ```bash
-# Run all tests
-./run.sh test
+# Test TTS
+python test_coqui_tts.py
 
-# Or manually
-python -m pytest tests/
-python test_csv_integration.py
-python examples/complete_ml_demo.py
+# Test ML system
+python test_complete_system.py
+
+# Test MongoDB
+python test_mongodb_insertion.py
 ```
 
-## 📝 Configuration
-
-### Environment Variables
-Create `.env` file:
+### Clean Cache
 ```bash
-MONGODB_URI=mongodb://localhost:27017/
-MONGODB_DB=tyreplex
-ELASTICSEARCH_HOST=localhost:9200
-OPENAI_API_KEY=your_key_here  # Optional, for voice
+python cleanup.py
 ```
 
-### Docker Configuration
-Edit `docker-compose.yml` for custom ports or settings.
-
-## 🔧 Development
-
-### Install Dependencies
+### Train Models
 ```bash
-pip install -r requirements.txt
+python train_complete_system.py
 ```
 
-### Project Setup
-```bash
-# 1. Place CSV file
-cp your_file.csv vehicle_tyre_mapping.csv
+## � Security
 
-# 2. Run complete setup
-./run.sh all
-
-# 3. Test
-./run.sh test
-```
-
-## � Monitoring
-
-### Elasticsearch
-- URL: http://localhost:9200
-- Health: http://localhost:9200/_cluster/health
-
-### MongoDB
-```bash
-# Connect
-mongo mongodb://localhost:27017/tyreplex
-
-# Check collections
-db.vehicles.count()
-db.tyres.count()
-```
-
-### Kibana (Optional)
-- URL: http://localhost:5601
-- Configure index pattern: `tyreplex-*`
-
-## � Deployment
-
-### Local Testing
-```bash
-./run.sh all
-```
-
-### Production
-1. Update `.env` with production credentials
-2. Configure Docker for production
-3. Set up monitoring
-4. Deploy with `docker-compose up -d`
-
-## 💰 Cost Savings
-
-| Calls | Before (OpenAI) | After (ML) | Savings |
-|-------|----------------|------------|---------|
-| 1,000 | ₹7,000-13,000 | ₹1,500 | 80-90% |
-| 10,000 | ₹70,000-130,000 | ₹15,000 | 80-90% |
-| Annual | ₹8.4L-15.6L | ₹1.8L | ₹6.6L-13.8L |
-
-## 🐛 Troubleshooting
-
-### CSV not found
-```bash
-ls vehicle_tyre_mapping.csv
-```
-
-### Docker services not starting
-```bash
-docker-compose down
-docker-compose up -d
-docker-compose logs
-```
-
-### Models not loading
-```bash
-ls models/
-./run.sh train
-```
-
-### Elasticsearch connection failed
-```bash
-curl http://localhost:9200
-docker-compose restart elasticsearch
-```
-
-## 📞 Support
-
-- Check logs: `docker-compose logs`
-- Run tests: `./run.sh test`
-- Review code: All files are documented
+- ✅ `.env` files in `.gitignore`
+- ✅ No credentials in code
+- ✅ Use `.env.example` for templates
+- ✅ MongoDB authentication supported
 
 ## 📄 License
 
-MIT License - See LICENSE file
+Proprietary - TyrePlex Internal Use
+
+## � Support
+
+For issues or questions, contact the development team.
 
 ---
 
-**Built for TyrePlex - Complete AI Customer Service System**
+**Built with ❤️ for TyrePlex**
