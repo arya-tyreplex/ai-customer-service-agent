@@ -105,7 +105,7 @@ create_venv() {
     
     # Update pip (Windows-safe method)
     print_info "Updating pip..."
-    $PYTHON_VENV -m pip install --upgrade pip setuptools wheel --quiet 2>/dev/null || {
+    $PYTHON_VENV -m pip install --upgrade pip setuptools wheel 2>/dev/null || {
         print_info "Pip upgrade skipped (permission issue - not critical)"
     }
     print_success "Virtual environment ready"
@@ -126,7 +126,10 @@ install_dependencies() {
     fi
     
     print_info "Installing dependencies in virtual environment..."
-    $PYTHON_VENV -m pip install -r requirements.txt --quiet
+    print_info "This may take 5-10 minutes (downloading torch, TTS, etc.)"
+    echo ""
+    $PYTHON_VENV -m pip install -r requirements.txt
+    echo ""
     print_success "Dependencies installed"
 }
 

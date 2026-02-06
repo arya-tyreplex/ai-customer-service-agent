@@ -1,7 +1,7 @@
 """
 Professional Call Center Voice Agent - TyrePlex
-Using Coqui TTS (Free, Open-Source, Low Latency <200ms)
-High-quality neural voice with real-time speed!
+Using AWS Polly for TTS and AWS Transcribe for STT
+Production-ready, reliable voice interaction
 """
 
 import os
@@ -15,8 +15,9 @@ from src.inhouse_ml.mongodb_manager import MongoDBManager
 from loguru import logger
 import re
 from dotenv import load_dotenv
-import speech_recognition as sr
+import boto3
 import pyaudio
+import wave
 
 # Load environment variables
 load_dotenv()
@@ -57,41 +58,69 @@ class ConversationState:
 
 
 class AWSVoiceAgent:
-    """Professional call center voice agent using Coqui TTS (Free & Fast)."""
+    """Professional call center voice agent using AWS Polly (TTS) and Transcribe (STT)."""
     
     AGENT_NAME = "Priya"
     
     def __init__(self):
-        """Initialize the Coqui TTS voice agent."""
+        """Initialize the AWS Polly voice agent."""
         print("\n" + "="*70)
-        print("  TyrePlex Professional Call Center - Coqui TTS")
+        print("  TyrePlex Professional Call Center - AWS Polly")
         print("="*70)
-        print("\n🔧 Initializing Coqui TTS voice agent...")
+        print("\n🔧 Initializing AWS Polly voice agent...")
+        
+        # Suppress pygame and setuptools warnings
+        import warnings
+        warnings.filterwarnings('ignore', category=DeprecationWarning)
+        os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "1"
+        
+        # AWS Configuration
+        aws_access_key = os.getenv('AWS_ACCESS_KEY_ID')
+        aws_secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        aws_region = os.getenv('AWS_DEFAULT_REGION', 'us-east-1')
+        
+        if not aws_access_key or not aws_secret_key:
+            print("❌ AWS credentials not found in .env file")
+            print("\n📝 Add to .env:")
+            print("   AWS_ACCESS_KEY_ID=your_key")
+            print("   AWS_SECRET_ACCESS_KEY=your_secret")
+            raise ValueError("AWS credentials required")
         
         try:
-            # Import TTS
-            from TTS.api import TTS
+            # Initialize AWS Polly for TTS
+            self.polly_client = boto3.client(
+                service_name='polly',
+                region_name=aws_region,
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key
+            )
             
-            # Initialize TTS with fast model
-            # Using tts_models/en/ljspeech/tacotron2-DDC (fast and good quality)
-            self.tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False, gpu=False)
-            print("✅ Coqui TTS initialized")
-            print("✅ Using model: Tacotron2-DDC (Fast & Natural)")
+            # Initialize AWS Transcribe for STT
+            self.transcribe_client = boto3.client(
+                service_name='transcribe',
+                region_name=aws_region,
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key
+            )
+            
+            # Initialize S3 for Transcribe (needs audio files in S3)
+            self.s3_client = boto3.client(
+                service_name='s3',
+                region_name=aws_region,
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key
+            )
+            
+            print(f"✅ AWS Polly initialized (Region: {aws_region})")
+            print("✅ Using voice: Kajal (Indian English)")
         except Exception as e:
-            print(f"❌ Failed to initialize Coqui TTS: {e}")
-            print("\n📝 Install Coqui TTS:")
-            print("   pip install TTS")
+            print(f"❌ Failed to initialize AWS services: {e}")
             raise
         
-        # Initialize PyAudio for playback
-        import pyaudio
+        # Initialize PyAudio for recording
         self.audio = pyaudio.PyAudio()
-        
-        # Initialize speech recognition (using Google for STT)
-        self.recognizer = sr.Recognizer()
-        self.recognizer.energy_threshold = 200  # Lower threshold for better recognition
-        self.recognizer.dynamic_energy_threshold = True
-        self.microphone = sr.Microphone()
+        self.sample_rate = 16000
+        self.chunk_size = 1024
         
         # Temporary directory
         self.temp_dir = tempfile.gettempdir()
@@ -115,22 +144,39 @@ class AWSVoiceAgent:
         self.call_id = f"CALL-{int(time.time()*1000)}"
         self.lead_id = None
         
-        print("✅ Coqui TTS voice agent ready!")
-        print("💡 Free, Open-Source, Low Latency (<200ms)\n")
+        print("✅ AWS Polly voice agent ready!")
+        print("💡 Production-ready TTS with Kajal voice\n")
     
     def speak(self, text: str, show_agent: bool = True, lang: str = None):
-        """Convert text to speech using Coqui TTS (free & fast)."""
+        """Convert text to speech using AWS Polly."""
         if show_agent:
             print(f"\n🤖 {self.AGENT_NAME}: {text}")
         else:
             print(f"\n{text}")
         
+        audio_file = None
         try:
-            # Generate speech using Coqui TTS
+            # Call AWS Polly for TTS
+            response = self.polly_client.synthesize_speech(
+                Text=text,
+                OutputFormat='pcm',
+                VoiceId='Kajal',  # Indian English female voice
+                Engine='neural',  # Use neural engine for better quality
+                LanguageCode=lang or 'en-IN'
+            )
+            
+            # Get audio stream
+            audio_stream = response['AudioStream'].read()
+            
+            # Save to temporary WAV file
             audio_file = os.path.join(self.temp_dir, f"tts_{int(time.time()*1000)}.wav")
             
-            # Synthesize speech (fast!)
-            self.tts.tts_to_file(text=text, file_path=audio_file)
+            # Convert PCM to WAV
+            with wave.open(audio_file, 'wb') as wav_file:
+                wav_file.setnchannels(1)  # Mono
+                wav_file.setsampwidth(2)  # 16-bit
+                wav_file.setframerate(16000)  # 16kHz
+                wav_file.writeframes(audio_stream)
             
             # Play audio using pygame
             import pygame
@@ -139,48 +185,68 @@ class AWSVoiceAgent:
             pygame.mixer.music.load(audio_file)
             pygame.mixer.music.play()
             
-            # Wait for playback to finish
+            # Wait for playback to finish (with interrupt handling)
             while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)
+                try:
+                    pygame.time.Clock().tick(10)
+                except KeyboardInterrupt:
+                    # Stop playback on interrupt
+                    pygame.mixer.music.stop()
+                    raise
             
-            # Small pause after speaking for more natural flow
+            # Small pause after speaking
             time.sleep(0.1)
-            
-            # Clean up
-            try:
-                os.remove(audio_file)
-            except:
-                pass
                 
+        except KeyboardInterrupt:
+            # Re-raise to allow proper cleanup
+            raise
         except Exception as e:
             print(f"   (Voice playback error: {e})")
+        finally:
+            # Always clean up audio file
+            if audio_file:
+                try:
+                    os.remove(audio_file)
+                except:
+                    pass
     
     def listen(self, timeout: int = 10) -> str:
-        """Listen to microphone and convert to text using Google Speech Recognition."""
-        with self.microphone as source:
-            print("\n🎤 Listening... (speak NOW - I'm listening for up to 10 seconds)")
-            
-            # Adjust for ambient noise
-            self.recognizer.adjust_for_ambient_noise(source, duration=0.3)
-            
-            try:
-                audio = self.recognizer.listen(source, timeout=timeout, phrase_time_limit=10)
-                print("   Audio captured, processing...")
-            except sr.WaitTimeoutError:
-                print("⏱️  No speech detected")
-                return ""
+        """Listen to microphone and convert to text using Google Speech Recognition (free)."""
+        import speech_recognition as sr
+        
+        recognizer = sr.Recognizer()
+        recognizer.energy_threshold = 200
         
         try:
-            # Convert speech to text (Indian English)
+            with sr.Microphone() as source:
+                print("\n🎤 Listening... (speak NOW - I'm listening for up to 10 seconds)")
+                
+                # Adjust for ambient noise
+                recognizer.adjust_for_ambient_noise(source, duration=0.3)
+                
+                try:
+                    audio = recognizer.listen(source, timeout=timeout, phrase_time_limit=10)
+                    print("   Audio captured, processing...")
+                except sr.WaitTimeoutError:
+                    print("⏱️  No speech detected")
+                    return ""
+            
+            # Convert speech to text (Indian English) - FREE!
             print("🔄 Sending to Google Speech Recognition...")
-            text = self.recognizer.recognize_google(audio, language='en-IN')
+            text = recognizer.recognize_google(audio, language='en-IN')
             print(f"✅ You said: {text}")
             return text
+        except KeyboardInterrupt:
+            print("\n⏸️  Listening interrupted")
+            raise
         except sr.UnknownValueError:
             print("❓ Could not understand audio - please speak louder and clearer")
             return ""
         except sr.RequestError as e:
             print(f"❌ Speech recognition error: {e}")
+            return ""
+        except Exception as e:
+            print(f"❌ Microphone error: {e}")
             return ""
     
     def extract_name(self, text: str) -> Optional[str]:
@@ -304,12 +370,14 @@ class AWSVoiceAgent:
         
         # TyrePlex-related keywords
         tyreplex_keywords = [
-            # Tyre related
-            'tyre', 'tire', 'wheel', 'rubber', 'puncture', 'alignment', 'balancing',
+            # Tyre related (including common mispronunciations)
+            'tyre', 'tire', 'tyres', 'tires', 'tayer', 'tayre', 'tiles', 'tails',
+            'wheel', 'rubber', 'puncture', 'alignment', 'balancing',
             'टायर', 'पहिया', 'व्हील',
             
             # Vehicle related
             'car', 'vehicle', 'bike', 'motorcycle', 'suv', 'truck', 'auto',
+            'gaadi', 'gadi', 'gaari', 'gari',
             'गाड़ी', 'कार', 'वाहन', 'बाइक',
             
             # Brand/Model related
@@ -320,15 +388,17 @@ class AWSVoiceAgent:
             # Service related
             'price', 'cost', 'install', 'fitting', 'service', 'warranty', 'guarantee',
             'book', 'appointment', 'schedule', 'delivery', 'home service',
+            'keemat', 'kimat', 'daam', 'dam',
             'कीमत', 'दाम', 'सर्विस', 'बुकिंग',
             
             # Size/Specification
             'size', 'specification', 'tubeless', 'radial',
             'साइज', 'स्पेसिफिकेशन',
             
-            # General inquiry
+            # General inquiry (including Hindi/Hinglish)
             'need', 'want', 'looking', 'buy', 'purchase', 'replace', 'change',
-            'chahiye', 'चाहिए', 'खरीदना', 'बदलना'
+            'chahiye', 'chahie', 'lena', 'lene', 'leni', 'kharidna', 'badalna',
+            'चाहिए', 'खरीदना', 'बदलना', 'लेना'
         ]
         
         # Check if any keyword is present
@@ -339,8 +409,8 @@ class AWSVoiceAgent:
         basic_conversation = [
             'hello', 'hi', 'hey', 'namaste', 'good morning', 'good evening',
             'yes', 'no', 'ok', 'okay', 'sure', 'thanks', 'thank you',
-            'haan', 'nahi', 'theek hai', 'dhanyavaad',
-            'my name', 'i am', 'mera naam', 'main'
+            'haan', 'han', 'nahi', 'nai', 'theek hai', 'thik hai', 'dhanyavaad',
+            'my name', 'i am', 'mera naam', 'main', 'ji', 'please'
         ]
         
         if any(phrase in text_lower for phrase in basic_conversation):
@@ -1037,7 +1107,7 @@ class AWSVoiceAgent:
                 self.speak(f"{name}, would you like to know about TyrePlex services?")
             
             response = self.listen(timeout=8)
-            if response and any(word in response.lower() for word in ['yes', 'sure', 'haan', 'okay', 'tell', 'know']):
+            if response and any(word in response.lower() for word in ['yes', 'sure', 'haan', 'han', 'okay', 'tell', 'know']):
                 self.present_services()
             
             # Step 3: Understand need with validation
@@ -1098,12 +1168,18 @@ class AWSVoiceAgent:
             
         except KeyboardInterrupt:
             print("\n\n👋 Call ended by user")
-            if self.state.language == 'hi':
-                self.speak("TyrePlex ko call karne ke liye dhanyavaad. Namaste!", lang='hi')
-            elif self.state.language == 'mix':
-                self.speak("TyrePlex ko call karne ke liye thank you. Bye!")
-            else:
-                self.speak("Thank you for calling TyrePlex. Goodbye!")
+            try:
+                # Try to say goodbye, but don't fail if interrupted again
+                if self.state.language == 'hi':
+                    self.speak("TyrePlex ko call karne ke liye dhanyavaad. Namaste!", lang='hi')
+                elif self.state.language == 'mix':
+                    self.speak("TyrePlex ko call karne ke liye thank you. Bye!")
+                else:
+                    self.speak("Thank you for calling TyrePlex. Goodbye!")
+            except KeyboardInterrupt:
+                print("   (Goodbye interrupted)")
+            except:
+                pass
         except Exception as e:
             print(f"\n❌ Error: {e}")
             import traceback
@@ -1125,17 +1201,18 @@ class AWSVoiceAgent:
 
 if __name__ == "__main__":
     print("\n" + "="*70)
-    print("  TyrePlex Professional Call Center - Coqui TTS")
-    print("  Free, Open-Source, Low Latency")
+    print("  TyrePlex Professional Call Center - AWS Polly")
+    print("  Production-Ready Voice Agent")
     print("="*70)
     print("\n📝 Requirements:")
-    print("  - Coqui TTS installed: pip install TTS")
+    print("  - AWS credentials in .env file")
     print("  - Microphone connected")
     print("\n💡 Features:")
-    print("  - Free & Open-Source")
-    print("  - Low latency (<200ms)")
+    print("  - AWS Polly (Neural TTS - Kajal voice)")
+    print("  - Google Speech Recognition (Free STT)")
+    print("  - Low latency")
     print("  - Natural voice quality")
-    print("  - No API keys needed!")
+    print("  - Bilingual support (English + Hindi)")
     print("\n" + "="*70)
     
     input("\nPress Enter to start the call...")
@@ -1146,6 +1223,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Failed to start voice agent: {e}")
         print("\n📝 Make sure you have:")
-        print("   1. Coqui TTS installed: pip install TTS")
+        print("   1. AWS credentials in .env file")
         print("   2. Microphone connected")
         print("   3. MongoDB running (optional)")
+
