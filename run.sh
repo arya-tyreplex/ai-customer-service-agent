@@ -288,8 +288,71 @@ run_tests() {
 run_demo() {
     print_header "Running Interactive Demo"
     
-    print_info "Starting demo..."
-    $PYTHON_VENV demo.py
+    echo ""
+    print_info "Choose demo type:"
+    echo "  1. Text-based demo (default)"
+    echo "  2. Voice demo - Robotic voice (pyttsx3)"
+    echo "  3. Voice demo - Natural voice (Google TTS) ⭐"
+    echo "  4. Voice demo - AWS Voice (uses Google TTS) 🌐"
+    echo ""
+    read -p "Enter choice (1/2/3/4): " choice
+    
+    case "$choice" in
+        2)
+            print_info "Starting voice demo (robotic voice)..."
+            print_info "Make sure your microphone is connected!"
+            
+            # Check if voice dependencies are installed
+            $PYTHON_VENV -c "import speech_recognition, pyttsx3" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                print_error "Voice dependencies not installed!"
+                print_info "Installing voice dependencies..."
+                $PYTHON_VENV -m pip install SpeechRecognition pyttsx3 --quiet
+            fi
+            
+            $PYTHON_VENV voice_demo_local.py
+            ;;
+        3)
+            print_info "Starting voice demo (natural voice)..."
+            print_info "Make sure your microphone is connected!"
+            
+            # Check if natural voice dependencies are installed
+            $PYTHON_VENV -c "import speech_recognition, gtts, pygame" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                print_error "Natural voice dependencies not installed!"
+                print_info "Installing natural voice dependencies..."
+                $PYTHON_VENV -m pip install SpeechRecognition gTTS pygame --quiet
+            fi
+            
+            $PYTHON_VENV voice_demo_natural.py
+            ;;
+        4)
+            print_info "Starting voice demo (AWS - uses Google TTS)..."
+            print_info "Make sure your microphone is connected!"
+            print_info "Note: Currently uses Google TTS (same as Option 3)"
+            
+            # Check if voice dependencies are installed
+            $PYTHON_VENV -c "import speech_recognition, gtts, pygame" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                print_error "Voice dependencies not installed!"
+                print_info "Installing voice dependencies..."
+                $PYTHON_VENV -m pip install SpeechRecognition gTTS pygame --quiet
+            fi
+            
+            # Check if boto3 is installed
+            $PYTHON_VENV -c "import boto3" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                print_info "Installing boto3..."
+                $PYTHON_VENV -m pip install boto3 --quiet
+            fi
+            
+            $PYTHON_VENV voice_demo_aws.py
+            ;;
+        *)
+            print_info "Starting text-based demo..."
+            $PYTHON_VENV demo.py
+            ;;
+    esac
 }
 
 # Complete setup (all steps)
@@ -362,7 +425,7 @@ show_usage() {
     echo "  process   - Process CSV and load to MongoDB"
     echo "  run       - Run REST API server (for testing)"
     echo "  test      - Run all tests"
-    echo "  demo      - Run interactive demo"
+    echo "  demo      - Run interactive demo (text or voice)"
     echo "  all       - Complete setup (all steps)"
     echo "  clean     - Remove virtual environment"
     echo "  help      - Show this help message"
@@ -374,7 +437,7 @@ show_usage() {
     echo "  ./run.sh train     # Train ML models"
     echo "  ./run.sh services  # Start Docker services"
     echo "  ./run.sh run       # Start REST API for testing"
-    echo "  ./run.sh demo      # Run interactive demo"
+    echo "  ./run.sh demo      # Run interactive demo (text or voice)"
     echo "  ./run.sh test      # Run tests"
     echo ""
     echo "Note: All Python commands run inside virtual environment (venv/)"
